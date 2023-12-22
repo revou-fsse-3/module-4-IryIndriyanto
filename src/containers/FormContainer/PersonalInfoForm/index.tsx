@@ -2,8 +2,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import Button from '../../../components/Button';
-import { Card } from '../../../components';
+import { Card, Button } from '../../../components';
 
 const PersonalInfoForm = () => {
   const formik = useFormik({

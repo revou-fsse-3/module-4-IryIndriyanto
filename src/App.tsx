@@ -1,13 +1,12 @@
 
 import './App.css'
-import PersonalInfoForm from './containers/FormContainer/PersonalInfoForm'
+import FormContainer from './containers/FormContainer'
+
 
 function App() {
     
   return (
-    <div>
-      <PersonalInfoForm/>
-    </div> 
+    <FormContainer/>
   )
 }
 
