@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useFormik } from "formik"
 import AccountInfoForm from "./AccountInfoForm"
 import AddressInfoForm from "./AddressInfoForm"
@@ -13,12 +14,37 @@ const FormContainer = () => {
         console.log(values);
       },
     });
-    
+
+    const [step, setStep] = useState<number>(1);
+
+    const handleNext = () => {
+        if(step === 3) {
+            return
+        }
+        setStep((prevState) => prevState + 1);
+    }
+
+    const handlePrevious = () => {
+        if(step === 1) {
+            return
+        }
+        setStep((prevState) => prevState - 1);
+    }
+
+
     return(
         <form onSubmit={formik.handleSubmit}>
-            <PersonalInfoForm/>
-            <AddressInfoForm/>
-            <AccountInfoForm/>
+            {step === 1 && (
+                <PersonalInfoForm onClickNext={handleNext}/>
+            )}
+
+            {step === 2 && (
+                <AddressInfoForm onClickNext={handleNext} onClickPrevious={handlePrevious}/>
+            )}
+
+            {step === 3 && (
+                <AccountInfoForm onClickPrevious={handlePrevious}/>
+            )}
         </form>
     )
 }

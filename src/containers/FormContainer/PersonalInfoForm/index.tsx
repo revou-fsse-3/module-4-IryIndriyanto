@@ -4,7 +4,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Card, Button } from '../../../components';
 
-const PersonalInfoForm = () => {
+interface Props {
+    onClickNext : () => void,
+}
+
+const PersonalInfoForm = ({onClickNext}:Props) => {
   const formik = useFormik({
     initialValues: {
       fullName: '',
@@ -55,7 +59,7 @@ const PersonalInfoForm = () => {
 
         <div className=' flex gap-4 justify-center items-center'>
             {/* <Button label='Previous'/> */}
-            <Button label='Next'/>
+            <Button label='Next' onClick={onClickNext}/>
         </div>
     </Card>
   );

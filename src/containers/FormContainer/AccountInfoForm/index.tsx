@@ -2,7 +2,11 @@ import { useFormik } from "formik";
 import { Card, Button } from '../../../components';
 import * as yup from 'yup';
 
-const AccountInfoForm = () => {
+interface Props {
+    onClickPrevious : () => void,
+}
+
+const AccountInfoForm = ({ onClickPrevious }: Props) => {
     const formik = useFormik({
         initialValues: {
           userName: '',
@@ -47,8 +51,8 @@ const AccountInfoForm = () => {
         
 
         <div className=' flex gap-4 justify-center items-center'>
-            <Button label='Previous'/>
-            <Button type='submit' label='Submit' className=" bg-green-600"/>
+            <Button label='Previous' onClick={onClickPrevious}/>
+            <Button type='submit' label='Submit' className="bg-green-600"/>
         </div>
     </Card>
 

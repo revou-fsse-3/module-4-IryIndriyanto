@@ -2,7 +2,12 @@ import { useFormik } from "formik";
 import { Card, Button } from '../../../components';
 import * as yup from 'yup';
 
-const AddressInfoForm = () => {
+interface Props {
+    onClickNext : () => void,
+    onClickPrevious : () => void,
+}
+
+const AddressInfoForm = ({ onClickNext, onClickPrevious}: Props) => {
     const formik = useFormik({
         initialValues: {
           StreetAddress: '',
@@ -62,8 +67,8 @@ const AddressInfoForm = () => {
         />
 
         <div className=' flex gap-4 justify-center items-center'>
-            <Button label='Previous'/>
-            <Button label='Next'/>
+            <Button label='Previous' onClick={onClickPrevious}/>
+            <Button label='Next' onClick={onClickNext}/>
         </div>
     </Card>
 
