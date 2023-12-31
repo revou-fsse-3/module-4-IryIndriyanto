@@ -1,12 +1,8 @@
-
-import './App.css'
-import FormContainer from './containers/FormContainer'
-
-
 function App() {
-    
+  
   return (
-    <FormContainer/>
+    <h1 className=" text-3xl text-red-500 font-bold">Hello World!!</h1>
+
   )
 }
 
