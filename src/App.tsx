@@ -2,7 +2,7 @@ import MultiStepForm from "./form/MultiStepForm";
 
 function App() {
   return (
-    <div className=" flex justify-center items-center ">
+    <div className=" flex justify-center items-center h-screen">
       <MultiStepForm />
     </div>
   );

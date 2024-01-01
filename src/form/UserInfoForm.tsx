@@ -79,7 +79,7 @@ const UserInfoForm = () => {
           control={form.control}
           name="birthDate"
           render={({ field }) => (
-            <FormItem className="flex flex-col">
+            <FormItem className="flex flex-col gap-2 mt-4">
               <FormLabel>Date of birth</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>

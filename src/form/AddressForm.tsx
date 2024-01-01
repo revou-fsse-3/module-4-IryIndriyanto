@@ -15,8 +15,6 @@ import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const AddressForm = () => {
   const formSchema = yup.object().shape({
-    fullName: yup.string().min(2, "Full Name must be at least 2 characters."),
-    email: yup.string().email().required(),
     birthDate: yup.date().required("it is a required field"),
     streetAddress: yup.string().required(),
     city: yup.string().required(),
@@ -28,9 +26,6 @@ const AddressForm = () => {
   const form = useForm<formValues>({
     resolver: yupResolver(formSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
-      // birthDate: new Date(),
       streetAddress: "",
       city: "",
       state: "",
