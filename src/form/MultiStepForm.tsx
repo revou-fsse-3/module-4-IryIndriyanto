@@ -212,7 +212,7 @@ const MultiStepForm = () => {
           </CardContent>
           {/* Address Information */}
           <CardHeader>
-            <CardTitle className="text-center">Address Information</CardTitle>
+            <CardTitle className="text-center">Account Information</CardTitle>
           </CardHeader>
           <CardContent>
             <FormField
