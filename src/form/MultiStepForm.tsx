@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { cn } from "@/lib/utils";
+import { DayPicker } from "react-day-picker";
 import { format } from "date-fns";
 
 import { Input } from "@/components/ui/input";
@@ -29,19 +30,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { DayPicker } from "react-day-picker";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(0);
-  const handleNext = () => {
-    setStep((currentStep) => currentStep + 1);
-    console.log(step);
-  };
-
-  const handlePrevious = () => {
-    setStep(step - 1);
-    console.log(step);
-  };
 
   const formSchema = yup.object().shape({
     fullName: yup
@@ -50,15 +41,33 @@ const MultiStepForm = () => {
       .min(2, "Full Name must be at least 2 characters."),
     email: yup.string().required().email(),
     birthDate: yup.date().required("birth date is required"),
-    streetAddress: yup.string(),
-    city: yup.string(),
-    state: yup.string(),
-    zipCode: yup.string(),
-    username: yup.string(),
-    password: yup.string(),
+    streetAddress: yup.string().required(),
+    city: yup.string().required(),
+    state: yup.string().required(),
+    zipCode: yup.number().required(),
+    username: yup.string().required(),
+    password: yup
+      .string()
+      .required()
+      .min(8, "Password must be 8 characters long")
+      .matches(/[0-9]/, "Password requires a number")
+      .matches(/[a-z]/, "Password requires a lowercase letter")
+      .matches(/[A-Z]/, "Password requires an uppercase letter")
+      .matches(/[^\w]/, "Password requires a symbol"),
   });
 
-  type formValues = yup.InferType<typeof formSchema>;
+  type formValues = {
+    fullName: string;
+    email: string;
+    birthDate: Date;
+    streetAddress: string;
+    city: string;
+    state: string;
+    zipCode: number;
+    username: string;
+    password: string;
+  };
+
   const form = useForm<formValues>({
     resolver: yupResolver(formSchema),
     defaultValues: {
@@ -67,14 +76,31 @@ const MultiStepForm = () => {
       streetAddress: "",
       city: "",
       state: "",
-      zipCode: "",
       username: "",
       password: "",
     },
   });
 
+  const handleNextStep0 = async () => {
+    const isStepValid = await form.trigger(["fullName", "email", "birthDate"]);
+    if (isStepValid) setStep((currentStep) => currentStep + 1);
+  };
+
+  const handleNextStep1 = async () => {
+    const isStepValid = await form.trigger([
+      "streetAddress",
+      "city",
+      "state",
+      "zipCode",
+    ]);
+    if (isStepValid) setStep((currentStep) => currentStep + 1);
+  };
+
+  const handlePrevious = () => {
+    setStep(step - 1);
+  };
+
   const onSubmit = (data: formValues) => {
-    if (step !== 2) return handleNext();
     alert(JSON.stringify(data));
     console.log(data);
     location.reload();
@@ -83,7 +109,7 @@ const MultiStepForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Card className="flex flex-col justify-between w-[350px] h-[550px] p-4 sm:w-[450px]">
+        <Card className="flex flex-col justify-between w-[350px] h-[600px] p-4 sm:w-[450px]">
           <div>
             {step === 0 && (
               <>
@@ -162,7 +188,7 @@ const MultiStepForm = () => {
                               }
                               initialFocus
                               captionLayout="dropdown-buttons"
-                              fromYear={1990} 
+                              fromYear={1990}
                               toYear={2025}
                             />
                           </PopoverContent>
@@ -281,7 +307,11 @@ const MultiStepForm = () => {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input placeholder="Input Your Password" {...field} />
+                          <Input
+                            type="password"
+                            placeholder="Input Your Password"
+                            {...field}
+                          />
                         </FormControl>
                         <FormDescription />
                         <FormMessage />
@@ -306,9 +336,29 @@ const MultiStepForm = () => {
                 Previous
               </Button>
             )}
-            <Button className={cn(" w-24")} type="submit">
-              {step === 2 ? "Submit" : "Next"}
-            </Button>
+            {step === 0 && (
+              <Button
+                className={cn(" w-24")}
+                type="button"
+                onClick={handleNextStep0}
+              >
+                Next
+              </Button>
+            )}
+            {step === 1 && (
+              <Button
+                className={cn(" w-24")}
+                type="button"
+                onClick={handleNextStep1}
+              >
+                Next
+              </Button>
+            )}
+            {step === 2 && (
+              <Button className={cn(" w-24")} type="submit">
+                Submit
+              </Button>
+            )}
           </CardFooter>
         </Card>
       </form>
