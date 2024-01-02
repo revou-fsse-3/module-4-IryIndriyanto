@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/popover";
 
 const MultiStepForm = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const handleNext = () => {
     setStep((currentStep) => currentStep + 1);
     console.log(step);
@@ -44,8 +44,11 @@ const MultiStepForm = () => {
   };
 
   const formSchema = yup.object().shape({
-    fullName: yup.string().min(2, "Full Name must be at least 2 characters."),
-    email: yup.string().email(),
+    fullName: yup
+      .string()
+      .required()
+      .min(2, "Full Name must be at least 2 characters."),
+    email: yup.string().required().email(),
     birthDate: yup.date().required("birth date is required"),
     streetAddress: yup.string(),
     city: yup.string(),
@@ -71,9 +74,10 @@ const MultiStepForm = () => {
   });
 
   const onSubmit = (data: formValues) => {
-    if (step !== 3) return handleNext();
+    if (step !== 2) return handleNext();
     alert(JSON.stringify(data));
     console.log(data);
+    location.reload()
   };
 
   return (
@@ -81,7 +85,7 @@ const MultiStepForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className="flex flex-col justify-between w-[350px] h-[550px] p-4 sm:w-[450px]">
           <div>
-            {step === 1 && (
+            {step === 0 && (
               <>
                 <CardHeader>
                   <CardTitle className="text-center">
@@ -168,7 +172,7 @@ const MultiStepForm = () => {
               </>
             )}
 
-            {step === 2 && (
+            {step === 1 && (
               <>
                 {/* Address Information */}
                 <CardHeader>
@@ -243,7 +247,7 @@ const MultiStepForm = () => {
               </>
             )}
 
-            {step === 3 && (
+            {step === 2 && (
               <>
                 {/* Acccount Information */}
                 <CardHeader>
@@ -287,18 +291,21 @@ const MultiStepForm = () => {
           </div>
 
           <CardFooter
-            className={cn("flex justify-between", step === 1 && " justify-end")}
+            className={cn("flex justify-between", step === 0 && " justify-end")}
           >
-            {step > 1 && (
+            {step > 0 && (
               <Button
                 variant={"outline"}
                 onClick={handlePrevious}
                 type="button"
+                className={cn(" w-24")}
               >
                 Previous
               </Button>
             )}
-            <Button type="submit">{step === 3 ? "Submit" : "Next"}</Button>
+            <Button className={cn(" w-24")} type="submit">
+              {step === 2 ? "Submit" : "Next"}
+            </Button>
           </CardFooter>
         </Card>
       </form>
