@@ -7,7 +7,6 @@ import { format } from "date-fns";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import {
   Form,
@@ -30,6 +29,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { DayPicker } from "react-day-picker";
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(0);
@@ -77,7 +77,7 @@ const MultiStepForm = () => {
     if (step !== 2) return handleNext();
     alert(JSON.stringify(data));
     console.log(data);
-    location.reload()
+    location.reload();
   };
 
   return (
@@ -152,7 +152,7 @@ const MultiStepForm = () => {
                             </FormControl>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
+                            <DayPicker
                               mode="single"
                               selected={field.value}
                               onSelect={field.onChange}
@@ -161,6 +161,9 @@ const MultiStepForm = () => {
                                 date < new Date("1900-01-01")
                               }
                               initialFocus
+                              captionLayout="dropdown-buttons"
+                              fromYear={1990} 
+                              toYear={2025}
                             />
                           </PopoverContent>
                         </Popover>
