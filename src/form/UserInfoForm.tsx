@@ -1,6 +1,3 @@
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
@@ -23,21 +20,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const UserInfoForm = () => {
-  const formSchema = yup.object().shape({
-    fullName: yup.string().min(2, "Full Name must be at least 2 characters."),
-    email: yup.string().email().required(),
-    birthDate: yup.date().required("it is a required field"),
-  });
-
-  type formValues = yup.InferType<typeof formSchema>;
-  const form = useForm<formValues>({
-    resolver: yupResolver(formSchema),
-    defaultValues: {
-      fullName: "",
-      email: "",
-    },
-  });
+const UserInfoForm = ({ form }:any) => {
+  
 
   return (
     <>

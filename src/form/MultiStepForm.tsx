@@ -30,6 +30,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import UserInfoForm from "./UserInfoForm";
+import { Progress } from "@/components/ui/progress";
+
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(0);
@@ -111,6 +114,9 @@ const MultiStepForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className="flex flex-col justify-between w-[350px] h-[600px] p-4 sm:w-[450px]">
           <div>
+            <div className="px-6 ">
+              <Progress value={(step+1)*100/3}/>
+            </div>
             {step === 0 && (
               <>
                 <CardHeader>
