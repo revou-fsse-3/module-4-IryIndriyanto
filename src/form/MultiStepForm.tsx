@@ -8,7 +8,9 @@ import { format } from "date-fns";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { CalendarIcon } from "lucide-react";
+import UserInfoForm from "./UserInfoForm";
 import {
   Form,
   FormControl,
@@ -30,8 +32,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import UserInfoForm from "./UserInfoForm";
-import { Progress } from "@/components/ui/progress";
 
 
 const MultiStepForm = () => {
