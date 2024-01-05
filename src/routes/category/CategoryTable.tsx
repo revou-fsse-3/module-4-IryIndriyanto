@@ -20,7 +20,7 @@ import {
 import { CATEGORY_API_URL } from "@/utils/constant";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AddCategory } from "./AddCategoryDialog";
+import { AddCategory } from "./AddCategory";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -71,14 +71,14 @@ const CategoryTable = () => {
       console.log(token);
     }
   };
-  
+
   useEffect(() => {
     fetchDataWithToken();
   }, [categories]);
 
   const form = useForm();
   // const [categoryToEdit, setCategoryToEdit] = useState<categories[]>([]);
-  const onSubmitEdit = async (editedData:any) => {
+  const onSubmitEdit = async (editedData: any) => {
     const authToken = token;
     try {
       const response = await fetch(
@@ -94,9 +94,8 @@ const CategoryTable = () => {
       );
 
       if (response.ok) {
-        
         console.log("Successfully edit data");
-        location.reload()
+        location.reload();
       } else {
         // Request was not successful
         console.error("Failed to edit data:", response.statusText);
@@ -136,126 +135,130 @@ const CategoryTable = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
-      <div className=" mt-2 overflow-x-scroll p-4">
-        <div className="w-full flex justify-between my-3 px-6">
-          <span className="text-2xl font-bold"> Table of Category</span>
-          {/* <Button className=" bg-green-600">Add Category</Button> */}
-          <AddCategory />
-        </div>
-        <div className=" w-full max-w-[1024px] min-w-[768px]">
-          <Table>
-            <TableCaption>List of Category </TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="text-center">Id</TableHead>
-                <TableHead className="text-center">Name</TableHead>
-                <TableHead className="text-center">Is Active</TableHead>
-                <TableHead className="w-[170px] text-center">Control</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell className="text-center">{category.id}</TableCell>
-                  <TableCell className="text-center">{category.name}</TableCell>
-                  <TableCell className="text-center">
-                    {category.is_active ? (
-                      <span>Active</span>
-                    ) : (
-                      <span>Inactive</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="flex justify-between">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button className=" w-[65px]" size={"sm"}>
-                          Edit
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className=" py-9 px-12 sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>Edit Category</DialogTitle>
-                          <DialogDescription>
-                            Edit Your Category List .
-                          </DialogDescription>
-                        </DialogHeader>
-                        <Form {...form}>
-                          <form
-                            onSubmit={form.handleSubmit(onSubmitEdit)}
-                            className="space-y-0"
-                          >
-                            <FormField
-                              control={form.control}
-                              name="id"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Id</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      defaultValue={category.id}
-                                      disabled
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="name"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel>Name</FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      defaultValue={category.name}
-                                      placeholder="Input Your Name"
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="is_active"
-                              render={({ field }) => (
-                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md px-2 pb-6">
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value}
-                                      onCheckedChange={field.onChange}
-                                    />
-                                  </FormControl>
-                                  <div className="space-y-1 leading-none">
-                                    <FormLabel>Is user active?</FormLabel>
-                                  </div>
-                                </FormItem>
-                              )}
-                            />
-                            <Button type="submit">Submit</Button>
-                          </form>
-                        </Form>
-                      </DialogContent>
-                    </Dialog>
-                    <Button
-                      className=" w-[65px]"
-                      size={"sm"}
-                      variant={"destructive"}
-                      onClick={() => deleteData(category.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
+    <div className="flex flex-col items-center">
+      <div className="w-full flex justify-between my-3 px-6 max-w-[768px]">
+        <span className="text-xl font-bold sm:text-2xl"> Table of Category</span>
+        <AddCategory />
+      </div>
+      <div className="flex justify-center w-full">
+        <div className=" mt-2 overflow-x-scroll p-4">
+          <div className=" w-full min-w-[768px]">
+            <Table>
+              <TableCaption>List of Category </TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-center">Id</TableHead>
+                  <TableHead className="text-center">Name</TableHead>
+                  <TableHead className="text-center">Is Active</TableHead>
+                  <TableHead className="w-[170px] text-center">
+                    Control
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {categories.map((category) => (
+                  <TableRow key={category.id}>
+                    <TableCell className="text-center">{category.id}</TableCell>
+                    <TableCell className="text-center">
+                      {category.name}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {category.is_active ? (
+                        <span>Active</span>
+                      ) : (
+                        <span>Inactive</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="flex justify-between">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className=" w-[65px]" size={"sm"}>
+                            Edit
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className=" py-9 px-12 sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Edit Category</DialogTitle>
+                            <DialogDescription>
+                              Edit Your Category List .
+                            </DialogDescription>
+                          </DialogHeader>
+                          <Form {...form}>
+                            <form
+                              onSubmit={form.handleSubmit(onSubmitEdit)}
+                              className="space-y-0"
+                            >
+                              <FormField
+                                control={form.control}
+                                name="id"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Id</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        defaultValue={category.id}
+                                        disabled
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Name</FormLabel>
+                                    <FormControl>
+                                      <Input
+                                        defaultValue={category.name}
+                                        placeholder="Input Your Name"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name="is_active"
+                                render={({ field }) => (
+                                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md px-2 pb-6">
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                      />
+                                    </FormControl>
+                                    <div className="space-y-1 leading-none">
+                                      <FormLabel>Is user active?</FormLabel>
+                                    </div>
+                                  </FormItem>
+                                )}
+                              />
+                              <Button type="submit">Submit</Button>
+                            </form>
+                          </Form>
+                        </DialogContent>
+                      </Dialog>
+                      <Button
+                        className=" w-[65px]"
+                        size={"sm"}
+                        variant={"destructive"}
+                        onClick={() => deleteData(category.id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-        <div>Pagination</div>
       </div>
     </div>
   );
