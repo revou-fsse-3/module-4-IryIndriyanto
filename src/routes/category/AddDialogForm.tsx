@@ -43,8 +43,7 @@ export function AddDialogForm() {
       );
 
       if (response.ok) {
-        const data = await response.json();
-        location.reload()
+        const data = await response.json();        
         console.log("Submit successful:", data);
       } else {
         throw new Error("Submit failed");

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -8,10 +9,28 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { CATEGORY_API_URL } from "@/utils/constant";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AddCategory } from "./AddCategoryDialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
 
 const CategoryTable = () => {
   const token = localStorage.getItem("revou-w10-token") ?? "";
@@ -52,10 +71,42 @@ const CategoryTable = () => {
       console.log(token);
     }
   };
-
+  
   useEffect(() => {
     fetchDataWithToken();
   }, [categories]);
+
+  const form = useForm();
+  // const [categoryToEdit, setCategoryToEdit] = useState<categories[]>([]);
+  const onSubmitEdit = async (editedData:any) => {
+    const authToken = token;
+    try {
+      const response = await fetch(
+        "https://mock-api.arikmpt.com/api/category/update",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(editedData),
+        }
+      );
+
+      if (response.ok) {
+        
+        console.log("Successfully edit data");
+        location.reload()
+      } else {
+        // Request was not successful
+        console.error("Failed to edit data:", response.statusText);
+        console.log(editedData);
+      }
+    } catch (error) {
+      console.error("Error occurred while geting data:", error);
+    }
+    console.log(editedData);
+  };
 
   const deleteData = async (idToDelete: any) => {
     const authToken = token;
@@ -90,7 +141,7 @@ const CategoryTable = () => {
         <div className="w-full flex justify-between my-3 px-6">
           <span className="text-2xl font-bold"> Table of Category</span>
           {/* <Button className=" bg-green-600">Add Category</Button> */}
-          <AddCategory  />
+          <AddCategory />
         </div>
         <div className=" w-full max-w-[1024px] min-w-[768px]">
           <Table>
@@ -116,9 +167,80 @@ const CategoryTable = () => {
                     )}
                   </TableCell>
                   <TableCell className="flex justify-between">
-                    <Button className=" w-[65px]" size={"sm"}>
-                      Edit
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button className=" w-[65px]" size={"sm"}>
+                          Edit
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className=" py-9 px-12 sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Edit Category</DialogTitle>
+                          <DialogDescription>
+                            Edit Your Category List .
+                          </DialogDescription>
+                        </DialogHeader>
+                        <Form {...form}>
+                          <form
+                            onSubmit={form.handleSubmit(onSubmitEdit)}
+                            className="space-y-0"
+                          >
+                            <FormField
+                              control={form.control}
+                              name="id"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Id</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      defaultValue={category.id}
+                                      disabled
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Name</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      defaultValue={category.name}
+                                      placeholder="Input Your Name"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="is_active"
+                              render={({ field }) => (
+                                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md px-2 pb-6">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                    />
+                                  </FormControl>
+                                  <div className="space-y-1 leading-none">
+                                    <FormLabel>Is user active?</FormLabel>
+                                  </div>
+                                </FormItem>
+                              )}
+                            />
+                            <Button type="submit">Submit</Button>
+                          </form>
+                        </Form>
+                      </DialogContent>
+                    </Dialog>
                     <Button
                       className=" w-[65px]"
                       size={"sm"}
