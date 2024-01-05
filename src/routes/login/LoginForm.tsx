@@ -20,10 +20,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { LOGIN_API_URL, TOKEN_KEY } from "@/utils/constant";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const formSchema = yup.object().shape({
-    username: yup.string().required(),
+    email: yup.string().required().email(),
     password: yup.string().required(),
   });
 
@@ -31,15 +33,37 @@ const LoginForm = () => {
   const form = useForm<formValues>({
     resolver: yupResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
-  const onSubmit = (data: formValues) => {
-    alert(JSON.stringify(data));
-    console.log(data);
-    location.reload();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: formValues) => {
+    try {
+      const response = await fetch(LOGIN_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Optionally, you might handle the successful registration response
+        console.log("Login successful:", data);
+        localStorage.setItem(TOKEN_KEY, data.data.token)
+        navigate("/category");
+      } else {
+        // Handle registration failure (e.g., validation errors, server error)
+        throw new Error("Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    }
   };
 
   return (
@@ -54,12 +78,12 @@ const LoginForm = () => {
               <CardContent>
                 <FormField
                   control={form.control}
-                  name="username"
+                  name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Input Your Username" {...field} />
+                        <Input placeholder="Input Your Email" {...field} />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -74,7 +98,11 @@ const LoginForm = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="Input Your Password" {...field} />
+                        <Input
+                          type="password"
+                          placeholder="Input Your Password"
+                          {...field}
+                        />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -85,7 +113,12 @@ const LoginForm = () => {
             </div>
             <CardFooter className="flex flex-col items-center gap-2">
               <Button className="w-3/4">Login</Button>
-              <span className="text-xs">Don't have account? <a className=" underline " href="/register">Register</a></span>
+              <span className="text-xs">
+                Don't have account?{" "}
+                <a className=" underline " href="/register">
+                  Register
+                </a>
+              </span>
             </CardFooter>
           </Card>
         </form>
