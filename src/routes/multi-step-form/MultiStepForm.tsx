@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { CalendarIcon } from "lucide-react";
-import UserInfoForm from "./UserInfoForm";
 import {
   Form,
   FormControl,
