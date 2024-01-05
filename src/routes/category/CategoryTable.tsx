@@ -25,30 +25,42 @@ const CategoryTable = () => {
   ];
 
   return (
-    <Table>
-      <TableCaption>List of Category </TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Id</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Is Active</TableHead>
-          <TableHead>Control</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {categories.map((category) => (
-          <TableRow key={category.id}>
-            <TableCell>{category.id}</TableCell>
-            <TableCell>{category.name}</TableCell>
-            <TableCell>{category.is_active}</TableCell>
-            <TableCell>
-              <Button>Edit</Button>
-              <Button>Delete</Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className=" mt-6 flex justify-center w-full">
+      <div className=" w-full max-w-[1024px] min-w-[768px]">
+        <Table>
+          <TableCaption>List of Category </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-center">Id</TableHead>
+              <TableHead className="text-center">Name</TableHead>
+              <TableHead className="text-center">Is Active</TableHead>
+              <TableHead className="w-[170px] text-center">Control</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {categories.map((category) => (
+              <TableRow key={category.id}>
+                <TableCell>{category.id}</TableCell>
+                <TableCell>{category.name}</TableCell>
+                <TableCell>{category.is_active}</TableCell>
+                <TableCell className="flex justify-between">
+                  <Button className=" w-[65px]" size={"sm"}>
+                    Edit
+                  </Button>
+                  <Button
+                    className=" w-[65px]"
+                    size={"sm"}
+                    variant={"destructive"}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 };
 export default CategoryTable;
