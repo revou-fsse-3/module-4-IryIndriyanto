@@ -22,7 +22,7 @@ export function AddCategory() {
           <DialogTitle>Add Category</DialogTitle>
           <DialogDescription>Add Your Category List .</DialogDescription>
         </DialogHeader>
-        <AddDialogForm />
+        <AddDialogForm  />
       </DialogContent>
     </Dialog>
   );

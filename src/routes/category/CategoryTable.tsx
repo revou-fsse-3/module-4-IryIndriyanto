@@ -55,7 +55,7 @@ const CategoryTable = () => {
 
   useEffect(() => {
     fetchDataWithToken();
-  }, []);
+  }, [categories]);
 
   const deleteData = async (idToDelete: any) => {
     const authToken = token;
@@ -90,7 +90,7 @@ const CategoryTable = () => {
         <div className="w-full flex justify-between my-3 px-6">
           <span className="text-2xl font-bold"> Table of Category</span>
           {/* <Button className=" bg-green-600">Add Category</Button> */}
-          <AddCategory />
+          <AddCategory  />
         </div>
         <div className=" w-full max-w-[1024px] min-w-[768px]">
           <Table>

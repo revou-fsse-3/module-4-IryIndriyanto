@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useNavigate } from "react-router-dom";
 import { DialogClose } from "@/components/ui/dialog";
 
 const FormSchema = yup.object({
@@ -28,7 +27,6 @@ export function AddDialogForm() {
   });
 
   const token = localStorage.getItem("revou-w10-token") ?? "";
-  const navigate = useNavigate();
   async function onSubmit(data: yup.InferType<typeof FormSchema>) {
     const authToken = token;
     try {
@@ -46,8 +44,8 @@ export function AddDialogForm() {
 
       if (response.ok) {
         const data = await response.json();
+        location.reload()
         console.log("Submit successful:", data);
-        navigate("/category");
       } else {
         throw new Error("Submit failed");
       }
